@@ -1,6 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
+interface MovieProps {
+  title: string;
+  releaseDate: string;
+  episodeId: number;
+}
+
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -24,14 +30,35 @@ const EpisodeDate = styled.span`
   color: #4c4c4c;
 `;
 
-export const MovieItem = ({ title, releaseDate, episodeId }) => {
+const convertToRoman = (number: number) => {
+  const romanNumbers = [
+    "-",
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI",
+    "VII",
+    "VIII",
+    "IX",
+    "X",
+  ];
+  return romanNumbers[number];
+};
+
+export const MovieItem = ({ title, releaseDate, episodeId }: MovieProps) => {
+  const romanNumber = convertToRoman(episodeId);
+
   return (
     <Wrapper>
       <div>
-        <EpisodeNumber> Episode 4 </EpisodeNumber>
-        <EpisodeTitle> Episode IV - A New Hope </EpisodeTitle>
+        <EpisodeNumber> Episode {episodeId} </EpisodeNumber>
+        <EpisodeTitle>
+          Episode {romanNumber} - {title}
+        </EpisodeTitle>
       </div>
-      <EpisodeDate> 1955-06-25 </EpisodeDate>
+      <EpisodeDate>{releaseDate}</EpisodeDate>
     </Wrapper>
   );
 };

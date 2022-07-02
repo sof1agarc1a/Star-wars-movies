@@ -38,14 +38,11 @@ export const App = () => {
       const data = await fetch(`https://swapi.dev/api/films/`);
       const fetchData = await data.json();
       setMovies(fetchData.results);
-
-      console.log(fetchData.results);
     };
     fetchMovies();
   }, []);
 
-  //   console.log(results);
-  //   console.log(data);
+  console.log(movies);
 
   return (
     <>
