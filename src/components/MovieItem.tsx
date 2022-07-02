@@ -24,7 +24,7 @@ const EpisodeDate = styled.span`
   color: #4c4c4c;
 `;
 
-export const MovieItem = () => {
+export const MovieItem = ({ title, releaseDate, episodeId }) => {
   return (
     <Wrapper>
       <div>
