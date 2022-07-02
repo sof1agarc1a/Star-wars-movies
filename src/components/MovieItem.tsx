@@ -1,17 +1,25 @@
 import React from "react";
 import styled from "styled-components";
+import { Movie } from "./types/Movie.types";
+import { convertToRoman } from "./utils/convertToRoman";
 
-interface MovieProps {
-  title: string;
-  releaseDate: string;
-  episodeId: number;
+interface MovieItemProps {
+  movie: Movie;
+  selectedMovie?: Movie;
+  setSelectedMovie: (movie: Movie) => void;
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ activate: boolean }>`
   display: flex;
   justify-content: space-between;
   padding: 20px 24px;
   border-bottom: 1px solid #d7dae0;
+  cursor: ${({ activate }) => !activate && "pointer"};
+  background-color: ${({ activate }) => activate && "#ebeef5"};
+
+  &:hover {
+    background-color: ${({ activate }) => !activate && "#f5f7fc"};
+  }
 `;
 
 const EpisodeTitle = styled.span`
@@ -30,32 +38,22 @@ const EpisodeDate = styled.span`
   color: #4c4c4c;
 `;
 
-const convertToRoman = (number: number) => {
-  const romanNumbers = [
-    "-",
-    "I",
-    "II",
-    "III",
-    "IV",
-    "V",
-    "VI",
-    "VII",
-    "VIII",
-    "IX",
-    "X",
-  ];
-  return romanNumbers[number];
-};
-
-export const MovieItem = ({ title, releaseDate, episodeId }: MovieProps) => {
-  const romanNumber = convertToRoman(episodeId);
+export const MovieItem = ({
+  movie,
+  selectedMovie,
+  setSelectedMovie,
+}: MovieItemProps) => {
+  const { title, release_date: releaseDate, episode_id: episodeId } = movie;
 
   return (
-    <Wrapper>
+    <Wrapper
+      activate={selectedMovie?.episode_id === episodeId}
+      onClick={() => setSelectedMovie(movie)}
+    >
       <div>
         <EpisodeNumber> Episode {episodeId} </EpisodeNumber>
         <EpisodeTitle>
-          Episode {romanNumber} - {title}
+          Episode {convertToRoman(episodeId)} - {title}
         </EpisodeTitle>
       </div>
       <EpisodeDate>{releaseDate}</EpisodeDate>

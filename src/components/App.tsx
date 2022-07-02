@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Filter } from "./Filter";
-import { MovieInfo } from "./MovieInfo";
+import { SelectedMovieInfo } from "./SelectedMovieInfo";
 import { MovieItem } from "./MovieItem";
 import { Search } from "./Search";
-
-type Movies = {
-  title: string;
-  release_date: string;
-  episode_id: number;
-};
+import { Movie } from "./types/Movie.types";
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -31,7 +26,8 @@ const MoviesList = styled.div`
 `;
 
 export const App = () => {
-  const [movies, setMovies] = useState<Movies[]>();
+  const [movies, setMovies] = useState<Movie[]>();
+  const [selectedMovie, setSelectedMovie] = useState<Movie>();
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -42,8 +38,6 @@ export const App = () => {
     fetchMovies();
   }, []);
 
-  console.log(movies);
-
   return (
     <>
       <NavigationWrapper>
@@ -53,22 +47,17 @@ export const App = () => {
 
       <Wrapper>
         <MoviesList>
-          {movies?.map(
-            (
-              { title, release_date: releaseDate, episode_id: episodeId },
-              index
-            ) => (
-              <MovieItem
-                key={index}
-                title={title}
-                releaseDate={releaseDate}
-                episodeId={episodeId}
-              />
-            )
-          )}
+          {movies?.map((movie, index) => (
+            <MovieItem
+              key={index}
+              movie={movie}
+              selectedMovie={selectedMovie}
+              setSelectedMovie={setSelectedMovie}
+            />
+          ))}
         </MoviesList>
 
-        <MovieInfo />
+        <SelectedMovieInfo movie={selectedMovie} />
       </Wrapper>
     </>
   );
