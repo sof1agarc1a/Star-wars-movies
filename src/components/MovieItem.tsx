@@ -9,16 +9,16 @@ interface MovieItemProps {
   setSelectedMovie: (movie: Movie) => void;
 }
 
-const Wrapper = styled.div<{ activate: boolean }>`
+const Wrapper = styled.div<{ active: boolean }>`
   display: flex;
   justify-content: space-between;
   padding: 20px 24px;
   border-bottom: 1px solid #d7dae0;
-  cursor: ${({ activate }) => !activate && "pointer"};
-  background-color: ${({ activate }) => activate && "#ebeef5"};
+  cursor: ${({ active }) => !active && "pointer"};
+  background-color: ${({ active }) => active && "#ebeef5"};
 
   &:hover {
-    background-color: ${({ activate }) => !activate && "#f5f7fc"};
+    background-color: ${({ active }) => !active && "#f5f7fc"};
   }
 `;
 
@@ -47,11 +47,11 @@ export const MovieItem = ({
 
   return (
     <Wrapper
-      activate={selectedMovie?.episode_id === episodeId}
+      active={selectedMovie?.episode_id === episodeId}
       onClick={() => setSelectedMovie(movie)}
     >
       <div>
-        <EpisodeNumber> Episode {episodeId} </EpisodeNumber>
+        <EpisodeNumber>Episode {episodeId}</EpisodeNumber>
         <EpisodeTitle>
           Episode {convertToRoman(episodeId)} - {title}
         </EpisodeTitle>

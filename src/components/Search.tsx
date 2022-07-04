@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { SearchIcon } from "./icons/SearchIcon";
+import { SearchIcon } from "./icons";
 
 const Wrapper = styled.div`
   position: relative;

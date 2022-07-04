@@ -5,7 +5,7 @@ interface SearchIconProps {
   size?: number;
 }
 
-export const SearchIcon = ({ color = "black", size = 24 }: SearchIconProps) => {
+const SearchIcon = ({ color = "black", size = 24 }: SearchIconProps) => {
   return (
     <svg
       width={size}
@@ -23,3 +23,5 @@ export const SearchIcon = ({ color = "black", size = 24 }: SearchIconProps) => {
     </svg>
   );
 };
+
+export default SearchIcon;
