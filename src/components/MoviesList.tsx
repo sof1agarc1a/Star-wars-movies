@@ -4,24 +4,38 @@ import { MovieItem } from "./MovieItem";
 import { Movie } from "./types/Movie.types";
 
 interface MoviesListProps {
-  movies?: Movie[];
+  loading: boolean;
+  filteredMovies?: Movie[];
   selectedMovie?: Movie;
   setSelectedMovie: (movie: Movie) => void;
 }
 
-const MoviesListWrapper = styled.div`
+const MoviesListWrapper = styled.div<{ loading?: boolean }>`
   width: 50%;
   border-left: 1px solid #d7dae0;
+
+  ${({ loading }) =>
+    loading &&
+    `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `}
 `;
 
 export const MoviesList = ({
-  movies,
+  loading,
+  filteredMovies,
   selectedMovie,
   setSelectedMovie,
 }: MoviesListProps) => {
+  if (loading) {
+    return <MoviesListWrapper loading>Loading movies...</MoviesListWrapper>;
+  }
+
   return (
     <MoviesListWrapper>
-      {movies?.map((movie, index) => (
+      {filteredMovies?.map((movie, index) => (
         <MovieItem
           key={index}
           movie={movie}

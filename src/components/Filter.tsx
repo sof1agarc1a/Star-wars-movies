@@ -4,10 +4,8 @@ import { CloseIcon } from "./icons";
 import { Movie } from "./types/Movie.types";
 
 interface FilterProps {
-  filter: "Episode" | "Year" | "None";
-  setMovies: (movies?: Movie[]) => void;
-  setFilter: (filter: "Episode" | "Year" | "None") => void;
-  movies?: Movie[];
+  setFilteredMovies: (movies: Movie[]) => void;
+  movies: Movie[];
 }
 
 const SortButton = styled.button<{ openModal: boolean }>`
@@ -22,10 +20,7 @@ const SortButton = styled.button<{ openModal: boolean }>`
   cursor: pointer;
 `;
 
-const SortModal = styled.div<{ openModal: boolean }>`
-  visibility: ${({ openModal }) => (openModal ? `initial` : `hidden`)};
-  opacity: ${({ openModal }) => (openModal ? `1` : `0`)};
-  transition: 0.15s;
+const SortModal = styled.div`
   position: fixed;
   top: 60px;
   width: 240px;
@@ -42,6 +37,14 @@ const SortByText = styled.p`
   padding: 8px;
   font-weight: 500;
   border-bottom: 1px solid #d7dae0;
+`;
+
+const ResetText = styled.span`
+  position: absolute;
+  top: 10px;
+  right: 32px;
+  font-size: 0.7rem;
+  cursor: pointer;
 `;
 
 const CloseIconWrapper = styled.div`
@@ -69,10 +72,10 @@ const SortOption = styled.p<{ active: boolean }>`
 const sortMovies = (
   filter: "Episode" | "Year" | "None",
   setFilter: (filter: "Episode" | "Year" | "None") => void,
-  setMovies: (movies?: Movie[]) => void,
-  movies?: Movie[]
+  setFilteredMovies: (movies: Movie[]) => void,
+  movies: Movie[]
 ) => {
-  movies?.sort((a, b) => {
+  const filteredMovies = movies?.sort((a, b) => {
     // filter by episode
     if (filter === "Episode") {
       return a.episode_id - b.episode_id;
@@ -84,17 +87,14 @@ const sortMovies = (
     // shuffle randomly when sort gets reset
     return 0.5 - Math.random();
   });
-  setMovies(movies);
+
+  setFilteredMovies(filteredMovies);
   setFilter(filter);
 };
 
-export const Filter = ({
-  filter,
-  movies,
-  setFilter,
-  setMovies,
-}: FilterProps) => {
+export const Filter = ({ movies, setFilteredMovies }: FilterProps) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [filter, setFilter] = useState<"Episode" | "Year" | "None">("None");
 
   return (
     <>
@@ -105,41 +105,61 @@ export const Filter = ({
         Sort by...
       </SortButton>
 
-      <SortModal openModal={openModal}>
-        <SortByText>Sort by</SortByText>
+      {openModal && (
+        <SortModal>
+          <SortByText>Sort by</SortByText>
 
-        <CloseIconWrapper onClick={() => setOpenModal(false)}>
-          <CloseIcon size={16} />
-        </CloseIconWrapper>
+          {filter !== "None" && (
+            <>
+              <ResetText
+                onClick={() =>
+                  sortMovies("None", setFilter, setFilteredMovies, movies)
+                }
+              >
+                Reset
+              </ResetText>
 
-        <SortOption
-          active={filter === "Episode"}
-          onClick={() =>
-            sortMovies(
-              filter === "Episode" ? "None" : "Episode",
-              setFilter,
-              setMovies,
-              movies
-            )
-          }
-        >
-          Episode
-        </SortOption>
+              <CloseIconWrapper
+                role="button"
+                aria-label="cross-icon"
+                onClick={() =>
+                  sortMovies("None", setFilter, setFilteredMovies, movies)
+                }
+              >
+                <CloseIcon size={16} />
+              </CloseIconWrapper>
+            </>
+          )}
 
-        <SortOption
-          active={filter === "Year"}
-          onClick={() =>
-            sortMovies(
-              filter === "Year" ? "None" : "Year",
-              setFilter,
-              setMovies,
-              movies
-            )
-          }
-        >
-          Year
-        </SortOption>
-      </SortModal>
+          <SortOption
+            active={filter === "Episode"}
+            onClick={() =>
+              sortMovies(
+                filter === "Episode" ? "None" : "Episode",
+                setFilter,
+                setFilteredMovies,
+                movies
+              )
+            }
+          >
+            Episode
+          </SortOption>
+
+          <SortOption
+            active={filter === "Year"}
+            onClick={() =>
+              sortMovies(
+                filter === "Year" ? "None" : "Year",
+                setFilter,
+                setFilteredMovies,
+                movies
+              )
+            }
+          >
+            Year
+          </SortOption>
+        </SortModal>
+      )}
     </>
   );
 };

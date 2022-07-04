@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Filter } from "./Filter";
 import { SelectedMovieInfo } from "./SelectedMovieInfo";
@@ -21,34 +21,39 @@ const Wrapper = styled.div`
 `;
 
 export const App = () => {
-  const [movies, setMovies] = useState<Movie[]>();
+  const [movies, setMovies] = useState<Movie[]>([] as Movie[]);
+  const [filteredMovies, setFilteredMovies] = useState<Movie[]>([] as Movie[]);
   const [selectedMovie, setSelectedMovie] = useState<Movie>();
-  const [filter, setFilter] = useState<"Episode" | "Year" | "None">("None"); // move to App
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchMovies = useCallback(async () => {
+    const data = await fetch(`https://swapi.dev/api/films/`);
+    const fetchData = await data.json();
+    setMovies(fetchData.results);
+    setFilteredMovies(fetchData.results);
+    setLoading(false);
+  }, [setMovies]);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const data = await fetch(`https://swapi.dev/api/films/`);
-      const fetchData = await data.json();
-      setMovies(fetchData.results);
-    };
     fetchMovies();
-  }, []);
+  }, [fetchMovies]);
 
   return (
     <>
       <NavigationWrapper>
         <Filter
-          filter={filter}
-          setFilter={setFilter}
-          setMovies={setMovies}
           movies={movies}
+          setFilteredMovies={(filteredMovies) =>
+            setFilteredMovies([...filteredMovies])
+          }
         />
-        <Search />
+        <Search setFilteredMovies={setFilteredMovies} movies={movies} />
       </NavigationWrapper>
 
       <Wrapper>
         <MoviesList
-          movies={movies}
+          loading={loading}
+          filteredMovies={filteredMovies}
           selectedMovie={selectedMovie}
           setSelectedMovie={setSelectedMovie}
         />

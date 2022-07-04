@@ -4,7 +4,7 @@ import { Movie } from "./types/Movie.types";
 import { convertToRoman } from "./utils/convertToRoman";
 
 interface SelectedMovieInfoProps {
-  movie?: Movie;
+  movie?: Exclude<Movie, "release_date">;
 }
 
 const Wrapper = styled.div<{ selectedMovie?: Movie }>`
