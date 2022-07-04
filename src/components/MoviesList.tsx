@@ -10,7 +10,7 @@ interface MoviesListProps {
   setSelectedMovie: (movie: Movie) => void;
 }
 
-const MoviesListWrapper = styled.div<{ loading?: boolean }>`
+const MoviesListWrapper = styled.div<{ loading?: string }>`
   width: 50%;
   border-left: 1px solid #d7dae0;
 
@@ -30,7 +30,9 @@ export const MoviesList = ({
   setSelectedMovie,
 }: MoviesListProps) => {
   if (loading) {
-    return <MoviesListWrapper loading>Loading movies...</MoviesListWrapper>;
+    return (
+      <MoviesListWrapper loading="true">Loading movies...</MoviesListWrapper>
+    );
   }
 
   return (
