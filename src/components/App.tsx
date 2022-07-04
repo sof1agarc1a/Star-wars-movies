@@ -37,13 +37,17 @@ export const App = () => {
   return (
     <>
       <NavigationWrapper>
-        <Filter filter={filter} setFilter={setFilter} />
+        <Filter
+          filter={filter}
+          setFilter={setFilter}
+          setMovies={setMovies}
+          movies={movies}
+        />
         <Search />
       </NavigationWrapper>
 
       <Wrapper>
         <MoviesList
-          filter={filter}
           movies={movies}
           selectedMovie={selectedMovie}
           setSelectedMovie={setSelectedMovie}
