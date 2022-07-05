@@ -18,6 +18,10 @@ const NavigationWrapper = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+
+  @media (max-width: 1000px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 export const App = () => {

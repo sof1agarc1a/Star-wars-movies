@@ -21,6 +21,10 @@ const MoviesListWrapper = styled.div<{ loading?: string }>`
     align-items: center;
     justify-content: center;
   `}
+
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
 `;
 
 export const MoviesList = ({

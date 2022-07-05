@@ -20,6 +20,12 @@ const Wrapper = styled.div<{ selectedMovie?: Movie }>`
     justify-content: center;
     align-items: center;
   `};
+
+  @media (max-width: 1000px) {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #d7dae0;
+  }
 `;
 
 const Title = styled.h2`
