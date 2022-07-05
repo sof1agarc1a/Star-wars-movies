@@ -85,8 +85,6 @@ describe("Filter", () => {
 
     const movieTitles = screen.getAllByRole("listitem");
 
-    console.log(movieTitles);
-
     expect(movieTitles[0].textContent).toBe("A new hope");
     expect(movieTitles[1].textContent).toBe("Return of the Jedi");
   });
@@ -103,8 +101,6 @@ describe("Filter", () => {
     fireEvent.click(option);
 
     const movieTitles = screen.getAllByRole("listitem");
-
-    console.log(movieTitles);
 
     expect(movieTitles[0].textContent).toBe("A new hope");
     expect(movieTitles[1].textContent).toBe("Return of the Jedi");

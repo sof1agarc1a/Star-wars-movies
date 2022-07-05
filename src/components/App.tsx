@@ -36,7 +36,7 @@ export const App = () => {
     setMovies(fetchData.results);
     setFilteredMovies(fetchData.results);
     setLoading(false);
-  }, [setMovies]);
+  }, []);
 
   useEffect(() => {
     fetchMovies();
